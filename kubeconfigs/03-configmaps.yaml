@@ -12,14 +12,13 @@ data:
   POSTGRES_HOST: "postgres.tractor.scout.ch"
   POSTGRES_DB: "pbs-taiga"
 
-  EMAIL_BACKEND: "smtp" # use an SMTP server or display the emails in the console (either "smtp" or "console")
-  EMAIL_HOST: smtp.mailomat.cloud # SMTP server address
-  EMAIL_PORT: "587" # default SMTP port
-  EMAIL_HOST_USER: no-reply@taiga.scout.ch # user to connect the SMTP server
-  EMAIL_DEFAULT_FROM: no-reply@taiga.scout.ch # default email address for the automated emails
-  # EMAIL_USE_TLS/EMAIL_USE_SSL are mutually exclusive (only set one of those to True)
-  #EMAIL_USE_TLS: True # use TLS (secure) connection with the SMTP server
-  EMAIL_USE_SSL: "True" # use implicit TLS (secure) connection with the SMTP server
+  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  DEFAULT_FROM_EMAIL: "no-reply@taiga.scout.ch"
+  EMAIL_USE_TLS: "True"
+  EMAIL_USE_SSL: "False"
+  EMAIL_HOST: "smtp.mailomat.cloud"
+  EMAIL_PORT: "587"
+  EMAIL_HOST_USER: "no-reply@taiga.scout.ch"
 
   # Taiga's Attachments - Variable to define how long the attachments will be accesible
   ATTACHMENTS_MAX_AGE: "360" # token expiration date (in seconds)

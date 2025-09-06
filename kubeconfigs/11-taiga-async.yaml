@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: taiga-async-rabbitmq
+  namespace: pbs-taiga
+spec:
+  resources:
+    requests:
+      storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -7,11 +19,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: taiga-events-rabbitmq
+      app: taiga-async-rabbitmq
   template:
     metadata:
       labels:
-        app: taiga-events-rabbitmq
+        app: taiga-async-rabbitmq
     spec:
       containers:
         - name: taiga-async-rabbitmq
@@ -45,6 +57,13 @@ spec:
                   key: ASYNC_RABBITMQ_VHOST
             - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
               value: "256MB"
+          volumeMounts:
+            - name: taiga-async-rabbitmq
+              mountPath: /var/lib/rabbitmq
+      volumes:
+        - name: taiga-async-rabbitmq
+          persistentVolumeClaim:
+            claimName: taiga-async-rabbitmq
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -105,3 +124,15 @@ spec:
               mountPath: /taiga-async/static
             - name: taiga-media
               mountPath: /taiga-async/media
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taiga-async-rabbitmq
+  namespace: pbs-taiga
+spec:
+  selector:
+    app: taiga-async-rabbitmq
+  ports:
+    - port: 5672
+      targetPort: 5672

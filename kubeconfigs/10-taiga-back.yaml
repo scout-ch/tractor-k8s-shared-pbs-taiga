@@ -71,7 +71,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
 spec:
   rules:
-    - host: taiga.k8s.tractor.scout.ch
+    - host: taiga.scout.ch
       http:
         paths:
           - pathType: Prefix

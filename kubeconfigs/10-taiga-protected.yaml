@@ -52,26 +52,3 @@ spec:
   ports:
     - port: 8003
       targetPort: 8003
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: taiga-protected
-  namespace: pbs-taiga
-  labels:
-    app: taiga-protected
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
-spec:
-  rules:
-    - host: taiga.k8s.tractor.scout.ch
-      http:
-        paths:
-          - pathType: Prefix
-            path: "/media"
-            backend:
-              service:
-                name: taiga-protected
-                port:
-                  number: 8003

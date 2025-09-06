@@ -24,9 +24,9 @@ spec:
             - containerPort: 80
           env:
             - name: TAIGA_URL
-              value: "https://taiga.k8s.tractor.scout.ch"
+              value: "https://taiga.scout.ch"
             - name: TAIGA_WEBSOCKETS_URL
-              value: "wss://taiga.k8s.tractor.scout.ch"
+              value: "wss://taiga.scout.ch"
             - name: TAIGA_SUBPATH
               value: ""
           resources:
@@ -61,7 +61,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
 spec:
   rules:
-    - host: taiga.k8s.tractor.scout.ch
+    - host: taiga.scout.ch
       http:
         paths:
           - pathType: Prefix

@@ -5,7 +5,7 @@ metadata:
   namespace: pbs-taiga
 data:
   TAIGA_SITES_SCHEME: "https"
-  TAIGA_SITES_DOMAIN: "taiga.k8s.tractor.scout.ch"
+  TAIGA_SITES_DOMAIN: "taiga.scout.ch"
   TAIGA_SUBPATH: ""
 
   POSTGRES_USER: "pbs-taiga"

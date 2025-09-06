@@ -20,6 +20,8 @@ spec:
   selector:
     matchLabels:
       app: taiga-async-rabbitmq
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:

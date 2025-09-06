@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: taiga-async-rabbitmq
-          image: rabbitmq:3.8-management-alpine
+          image: rabbitmq:3.8-management-alpine@sha256:c3e526769bfd885c898d1132e1008b216800e8543619c30d5959b220285564ef
           ports:
             - containerPort: 5672
           resources:
@@ -103,7 +103,7 @@ spec:
             claimName: taiga-media
       containers:
         - name: taiga-async
-          image: taigaio/taiga-back:6.8.3
+          image: taigaio/taiga-back:6.8.3@sha256:92d0cdd62b4fc20eab206347ba9bdd20f4a39b42227bd96bb9323a5f3f58a916
           ports:
             - containerPort: 8000
           command: ["/taiga-back/docker/async_entrypoint.sh"]

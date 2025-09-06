@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: taiga-protected
-          image: taigaio/taiga-protected:6.8.1
+          image: taigaio/taiga-protected:6.8.1@sha256:8a56c68b3bf8cbba73d8d4751451545410b490f424eec3a0cb0446a3a8123b4d
           ports:
             - containerPort: 8003
           env:

@@ -1,0 +1,107 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taiga-async-rabbitmq
+  namespace: pbs-taiga
+spec:
+  selector:
+    matchLabels:
+      app: taiga-events-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: taiga-events-rabbitmq
+    spec:
+      containers:
+        - name: taiga-async-rabbitmq
+          image: rabbitmq:3.8-management-alpine
+          ports:
+            - containerPort: 5672
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: RABBITMQ_ERLANG_COOKIE
+              value: "secret-erlang-cookie"
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: taiga-mappable-config
+                  key: ASYNC_RABBITMQ_USER
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: taiga-mappable-secrets
+                  key: ASYNC_RABBITMQ_PASS
+            - name: RABBITMQ_DEFAULT_VHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: taiga-mappable-config
+                  key: ASYNC_RABBITMQ_VHOST
+            - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
+              value: "256MB"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taiga-async
+  namespace: pbs-taiga
+  labels:
+    app: taiga-async
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: taiga-async
+  template:
+    metadata:
+      labels:
+        app: taiga-async
+    spec:
+      affinity:
+        podAffinity: # We need to schedule this on the same node as taiga-back because of shared volumes
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - taiga-back
+              topologyKey: "kubernetes.io/hostname"
+      volumes:
+        - name: taiga-static
+          persistentVolumeClaim:
+            claimName: taiga-static
+        - name: taiga-media
+          persistentVolumeClaim:
+            claimName: taiga-media
+      containers:
+        - name: taiga-async
+          image: taigaio/taiga-back:6.8.3
+          ports:
+            - containerPort: 8000
+          command: ["/taiga-back/docker/async_entrypoint.sh"]
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          envFrom:
+            - configMapRef:
+                name: taiga-config
+            - secretRef:
+                name: taiga-secrets
+          volumeMounts:
+            - name: taiga-static
+              mountPath: /taiga-async/static
+            - name: taiga-media
+              mountPath: /taiga-async/media

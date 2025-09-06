@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taiga-back
+  namespace: pbs-taiga
+  labels:
+    app: taiga-back
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: taiga-back
+  template:
+    metadata:
+      labels:
+        app: taiga-back
+    spec:
+      volumes:
+        - name: taiga-static
+          persistentVolumeClaim:
+            claimName: taiga-static
+        - name: taiga-media
+          persistentVolumeClaim:
+            claimName: taiga-media
+      containers:
+        - name: taiga-back
+          image: taigaio/taiga-back:6.8.3
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          envFrom:
+            - configMapRef:
+                name: taiga-config
+            - secretRef:
+                name: taiga-secrets
+          volumeMounts:
+            - name: taiga-static
+              mountPath: /taiga-back/static
+            - name: taiga-media
+              mountPath: /taiga-back/media
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taiga-back
+  namespace: pbs-taiga
+spec:
+  selector:
+    app: taiga-back
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: taiga-back
+  namespace: pbs-taiga
+  labels:
+    app: taiga-back
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
+spec:
+  rules:
+    - host: taiga.k8s.tractor.scout.ch
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/admin"
+            backend:
+              service:
+                name: taiga-back
+                port:
+                  number: 8000
+          - pathType: Prefix
+            path: "/api"
+            backend:
+              service:
+                name: taiga-back
+                port:
+                  number: 8000

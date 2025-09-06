@@ -1,6 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
+    "mergeConfidence:all-badges",
     "config:recommended",
     ":disableRateLimiting",
     ":enableVulnerabilityAlertsWithLabel(High priority)",
@@ -10,20 +11,23 @@
   ],
   "dependencyDashboard": true,
   "dependencyDashboardAutoclose": true,
-  "rebaseStalePrs": true,
+  "rebaseWhen": "behind-base-branch",
   "separateMultipleMajor": false,
   "separateMinorPatch": false,
   "ignoreTests": true,
   "assignees": [
     "cleverer"
   ],
-  "docker": {
-    "digest": {
-      "groupName": "All Docker Digests",
-      "groupSlug": "all-docker-digests"
-    }
-  },
   "packageRules": [
+    {
+      "matchCategories": [
+        "docker"
+      ],
+      "digest": {
+        "groupName": "All Docker Digests",
+        "groupSlug": "all-docker-digests"
+      }
+    },
     {
       "matchUpdateTypes": [
         "digest"
@@ -31,5 +35,10 @@
       "automerge": true,
       "automergeType": "branch"
     }
-  ]
+  ],
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/kubeconfigs/.+\\.yaml$/"
+    ]
+  }
 }

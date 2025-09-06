@@ -12,15 +12,14 @@ data:
   POSTGRES_HOST: "postgres.tractor.scout.ch"
   POSTGRES_DB: "pbs-taiga"
 
-  EMAIL_BACKEND: "console" # use an SMTP server or display the emails in the console (either "smtp" or "console")
-  #EMAIL_HOST: smtp.host.example.com # SMTP server address
-  #EMAIL_PORT: 587 # default SMTP port
-  #EMAIL_HOST_USER: user # user to connect the SMTP server
-  #EMAIL_HOST_PASSWORD: password # SMTP user's password
-  #EMAIL_DEFAULT_FROM: changeme@example.com # default email address for the automated emails
+  EMAIL_BACKEND: "smtp" # use an SMTP server or display the emails in the console (either "smtp" or "console")
+  EMAIL_HOST: smtp.mailomat.cloud # SMTP server address
+  EMAIL_PORT: "587" # default SMTP port
+  EMAIL_HOST_USER: no-reply@taiga.scout.ch # user to connect the SMTP server
+  EMAIL_DEFAULT_FROM: no-reply@taiga.scout.ch # default email address for the automated emails
   # EMAIL_USE_TLS/EMAIL_USE_SSL are mutually exclusive (only set one of those to True)
   #EMAIL_USE_TLS: True # use TLS (secure) connection with the SMTP server
-  #EMAIL_USE_SSL: False # use implicit TLS (secure) connection with the SMTP server
+  EMAIL_USE_SSL: "True" # use implicit TLS (secure) connection with the SMTP server
 
   # Taiga's Attachments - Variable to define how long the attachments will be accesible
   ATTACHMENTS_MAX_AGE: "360" # token expiration date (in seconds)

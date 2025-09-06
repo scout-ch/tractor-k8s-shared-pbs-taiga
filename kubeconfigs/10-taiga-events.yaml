@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: taiga-events-rabbitmq
-          image: rabbitmq:3.8-management-alpine
+          image: rabbitmq:3.8-management-alpine@sha256:c3e526769bfd885c898d1132e1008b216800e8543619c30d5959b220285564ef
           ports:
             - containerPort: 5672
           resources:
@@ -98,7 +98,7 @@ spec:
     spec:
       containers:
         - name: taiga-events
-          image: taigaio/taiga-events:6.7.0
+          image: taigaio/taiga-events:6.7.0@sha256:126ef65eb0d58c04ce460dbc9d6575ae6f2915d145f68f8e4d136cc4fc43d584
           ports:
             - containerPort: 8888
           env:

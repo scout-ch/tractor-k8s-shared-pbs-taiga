@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: taiga-front
-          image: taigaio/taiga-front:6.8.2
+          image: taigaio/taiga-front:6.8.2@sha256:4ffeac6bca4e56ad280fd033f5c546850723d12dc96bc108da004f9d87be6703
           ports:
             - containerPort: 80
           env:

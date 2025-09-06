@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taiga-protected
+  namespace: pbs-taiga
+  labels:
+    app: taiga-protected
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: taiga-protected
+  template:
+    metadata:
+      labels:
+        app: taiga-protected
+    spec:
+      containers:
+        - name: taiga-protected
+          image: taigaio/taiga-protected:6.8.1
+          ports:
+            - containerPort: 8003
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: taiga-secrets
+                  key: TAIGA_SECRET_KEY
+            - name: MAX_AGE
+              valueFrom:
+                configMapKeyRef:
+                  name: taiga-config
+                  key: ATTACHMENTS_MAX_AGE
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taiga-protected
+  namespace: pbs-taiga
+spec:
+  selector:
+    app: taiga-protected
+  ports:
+    - port: 8003
+      targetPort: 8003

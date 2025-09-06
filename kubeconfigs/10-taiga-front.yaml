@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taiga-front
+  namespace: pbs-taiga
+  labels:
+    app: taiga-front
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: taiga-front
+  template:
+    metadata:
+      labels:
+        app: taiga-front
+    spec:
+      containers:
+        - name: taiga-front
+          image: taigaio/taiga-front:6.8.2
+          ports:
+            - containerPort: 80
+          env:
+            - name: TAIGA_URL
+              value: "https://taiga.scout.ch"
+            - name: TAIGA_WEBSOCKETS_URL
+              value: "wss://taiga.scout.ch"
+            - name: TAIGA_SUBPATH
+              value: ""
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taiga-front
+  namespace: pbs-taiga
+spec:
+  selector:
+    app: taiga-front
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: taiga-front
+  namespace: pbs-taiga
+  labels:
+    app: taiga-front
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
+spec:
+  rules:
+    - host: taiga.scout.ch
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: taiga-front
+                port:
+                  number: 80

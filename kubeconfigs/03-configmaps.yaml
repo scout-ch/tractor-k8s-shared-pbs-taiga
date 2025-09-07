@@ -13,7 +13,7 @@ data:
   POSTGRES_DB: "pbs-taiga"
 
   EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
-  DEFAULT_FROM_EMAIL: "no-reply@taiga.scout.ch"
+  DEFAULT_FROM_EMAIL: "Taiga <no-reply@taiga.scout.ch>"
   EMAIL_USE_TLS: "True"
   EMAIL_USE_SSL: "False"
   EMAIL_HOST: "smtp.mailomat.cloud"

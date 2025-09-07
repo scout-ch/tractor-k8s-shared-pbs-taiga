@@ -13,6 +13,10 @@ data:
       client_max_body_size 100M;
       charset utf-8;
 
+      location /healthz {
+          return 200 'OK';
+      }
+
       # Static
       location /static/ {
           alias /taiga/static/;
@@ -80,6 +84,20 @@ spec:
               mountPath: /taiga/static
             - name: taiga-media
               mountPath: /taiga/media
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            periodSeconds: 1
+            failureThreshold: 60
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
       volumes:
         - name: taiga-gateway-config
           configMap:

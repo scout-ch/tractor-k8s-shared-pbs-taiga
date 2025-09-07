@@ -10,10 +10,12 @@ on:
     branches: ["main"]
     paths:
       - "docker/**"
+      - ".github/workflows/docker-publish.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "docker/**"
+      - ".github/workflows/docker-publish.yml"
 
 env:
   # Use docker.io for Docker Hub if empty

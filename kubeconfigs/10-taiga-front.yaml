@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: taiga-front
-          image: ghcr.io/scout-ch/pbs-taiga-front:latest@sha256:b1c68eb5b7c3e5aaf8be2fc422b4fb7db2f04ad0d30d5db62f903207da1e4718
+          image: ghcr.io/scout-ch/pbs-taiga-front:latest@sha256:d1062c1ed48af74a5445f8389f7120e4f6a681ef582198cfe63f0b2cca114422
           ports:
             - containerPort: 80
           env:

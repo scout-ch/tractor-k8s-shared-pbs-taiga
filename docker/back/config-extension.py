@@ -20,7 +20,7 @@ import os
 OIDC_RP_CLIENT_ID = os.getenv("OIDC_RP_CLIENT_ID")
 OIDC_RP_CLIENT_SECRET = os.getenv("OIDC_RP_CLIENT_SECRET")
 OIDC_BASE_URL = os.getenv("OIDC_BASE_URL")
-OIDC_OP_JWKS_ENDPOINT = OIDC_BASE_URL + "/Jwks"
-OIDC_OP_AUTHORIZATION_ENDPOINT = OIDC_BASE_URL + "/Authorization"
-OIDC_OP_TOKEN_ENDPOINT = OIDC_BASE_URL + "/Token"
-OIDC_OP_USER_ENDPOINT = OIDC_BASE_URL + "/UserInfo"
+OIDC_OP_JWKS_ENDPOINT = OIDC_BASE_URL + "/protocol/openid-connect/certs"
+OIDC_OP_AUTHORIZATION_ENDPOINT = OIDC_BASE_URL + "/protocol/openid-connect/auth"
+OIDC_OP_TOKEN_ENDPOINT = OIDC_BASE_URL + "/protocol/openid-connect/token"
+OIDC_OP_USER_ENDPOINT = OIDC_BASE_URL + "/protocol/openid-connect/userinfo"

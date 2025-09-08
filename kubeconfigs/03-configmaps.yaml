@@ -25,6 +25,9 @@ data:
 
   # Taiga's Telemetry - Variable to enable or disable the anonymous telemetry
   ENABLE_TELEMETRY: "False"
+
+  OIDC_RP_CLIENT_ID: "taiga"
+  OIDC_BASE_URL: "https://id.scout.ch/auth/realms/default"
 ---
 apiVersion: v1
 kind: ConfigMap

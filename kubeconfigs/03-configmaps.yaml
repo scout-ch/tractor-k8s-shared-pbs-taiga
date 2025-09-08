@@ -27,7 +27,7 @@ data:
   ENABLE_TELEMETRY: "False"
 
   OIDC_RP_CLIENT_ID: "taiga"
-  OIDC_BASE_URL: "https://id.scout.ch/auth/realms/default"
+  OIDC_BASE_URL: "https://id.scout.ch/realms/default"
 ---
 apiVersion: v1
 kind: ConfigMap

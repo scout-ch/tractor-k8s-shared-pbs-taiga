@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: taiga-events-rabbitmq
-          image: rabbitmq:3.8-management-alpine@sha256:c3e526769bfd885c898d1132e1008b216800e8543619c30d5959b220285564ef
+          image: rabbitmq:4.1-management-alpine@sha256:3f32da0a5093dc67dbd102fc539ab3acaddcc41b4f8d0282c6698b3187517376
           ports:
             - containerPort: 5672
           resources:

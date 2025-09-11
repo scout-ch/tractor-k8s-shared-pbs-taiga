@@ -40,3 +40,12 @@ data:
 
   ASYNC_RABBITMQ_USER: "taiga"
   ASYNC_RABBITMQ_VHOST: "taiga"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-memory-limit-config
+  namespace: pbs-taiga
+data:
+  20-memory-limit.conf: |
+    vm_memory_high_watermark.absolute = $(X_RABBITMQ_VM_MEMORY_HIGH_WATERMARK)

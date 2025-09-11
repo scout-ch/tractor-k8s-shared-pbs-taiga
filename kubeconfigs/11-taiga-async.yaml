@@ -12,7 +12,7 @@ spec:
     - ReadWriteOnce
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: taiga-async-rabbitmq
   namespace: pbs-taiga
@@ -20,8 +20,8 @@ spec:
   selector:
     matchLabels:
       app: taiga-async-rabbitmq
-  strategy:
-    type: Recreate
+  serviceName: taiga-async-rabbitmq
+  replicas: 1
   template:
     metadata:
       labels:
@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: taiga-async-rabbitmq
-          image: rabbitmq:3.8-management-alpine@sha256:c3e526769bfd885c898d1132e1008b216800e8543619c30d5959b220285564ef
+          image: rabbitmq:4.1-management-alpine@sha256:3f32da0a5093dc67dbd102fc539ab3acaddcc41b4f8d0282c6698b3187517376
           ports:
             - containerPort: 5672
           resources:
@@ -39,9 +39,25 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
+          livenessProbe:
+            exec:
+              command: ["rabbitmq-diagnostics", "status"]
+            initialDelaySeconds: 60
+            # See https://www.rabbitmq.com/monitoring.html for monitoring frequency recommendations.
+            periodSeconds: 60
+            timeoutSeconds: 15
+          readinessProbe:
+            exec:
+              command: ["rabbitmq-diagnostics", "ping"]
+            initialDelaySeconds: 20
+            periodSeconds: 60
+            timeoutSeconds: 10
           env:
             - name: RABBITMQ_ERLANG_COOKIE
-              value: "secret-erlang-cookie"
+              valueFrom:
+                secretKeyRef:
+                  name: taiga-mappable-secrets
+                  key: ASNYC_RABBITMQ_ERLANG_COOKIE
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
                 configMapKeyRef:
@@ -57,15 +73,24 @@ spec:
                 configMapKeyRef:
                   name: taiga-mappable-config
                   key: ASYNC_RABBITMQ_VHOST
-            - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
+            - name: X_RABBITMQ_VM_MEMORY_HIGH_WATERMARK
               value: "256MB"
           volumeMounts:
             - name: taiga-async-rabbitmq
-              mountPath: /var/lib/rabbitmq
+              mountPath: /var/lib/rabbitmq/mnesia
+            - name: memory-limit-config
+              mountPath: /etc/rabbitmq/conf.d/20-memory-limit.conf
+              subPath: 20-memory-limit.conf
       volumes:
         - name: taiga-async-rabbitmq
           persistentVolumeClaim:
             claimName: taiga-async-rabbitmq
+        - name: memory-limit-config
+          configMap:
+            name: rabbitmq-memory-limit-config
+            items:
+              - key: 20-memory-limit.conf
+                path: 20-memory-limit.conf
 ---
 apiVersion: apps/v1
 kind: Deployment

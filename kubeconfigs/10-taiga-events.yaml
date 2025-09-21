@@ -27,6 +27,8 @@ spec:
       labels:
         app: taiga-events-rabbitmq
     spec:
+      nodeSelector:
+        kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pvy
       containers:
         - name: taiga-events-rabbitmq
           # Can't update post 4.1.0 because of breaking changes:
@@ -125,6 +127,8 @@ spec:
       labels:
         app: taiga-events
     spec:
+      nodeSelector:
+        kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pvy
       containers:
         - name: taiga-events
           image: taigaio/taiga-events:6.7.0@sha256:126ef65eb0d58c04ce460dbc9d6575ae6f2915d145f68f8e4d136cc4fc43d584

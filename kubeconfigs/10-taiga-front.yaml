@@ -17,6 +17,8 @@ spec:
       labels:
         app: taiga-front
     spec:
+      nodeSelector:
+        kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pvy
       containers:
         - name: taiga-front
           image: ghcr.io/scout-ch/pbs-taiga-front:latest@sha256:c4cccaa44513f772c8b550735304db0c373456bcab1e7bc5cafd65f65012f8d1

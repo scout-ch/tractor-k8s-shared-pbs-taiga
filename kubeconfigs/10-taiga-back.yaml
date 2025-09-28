@@ -28,7 +28,7 @@ spec:
             claimName: taiga-media
       containers:
         - name: taiga-back
-          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:c3550706366cd68c5c89746c5ec1f56524c62981c8ed17a48e8bfc42890cd36e
+          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:3bf4a23e4dbd4451f6442197e3af93eec906864fa3169b315069f4cd3c57f5c3
           ports:
             - containerPort: 8000
           resources:

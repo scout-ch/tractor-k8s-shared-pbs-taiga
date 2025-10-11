@@ -18,6 +18,10 @@ FROM base AS final
 
 COPY ./urls.py /taiga-back/settings/urls.py
 
+COPY ./custom_entrypoint.sh /taiga-back/docker/custom_entrypoint.sh
+
+COPY ./migration.sh /taiga-back/docker/migration.sh
+
 COPY --from=builder /taiga-back/settings/config.py /taiga-back/settings/config.py
 
 COPY --from=builder /taiga-contrib-oidc-auth/back/dist/taiga-contrib-oidc-auth-0.3.tar.gz /tmp/taiga-contrib-oidc-auth.tar.gz

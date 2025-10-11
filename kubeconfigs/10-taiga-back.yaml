@@ -29,6 +29,7 @@ spec:
       containers:
         - name: taiga-back
           image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:dfa4a0b68cc0647915f456ca0d94532efbb825742a77966ab32c9b4f23cff772
+          command: ["/taiga-back/docker/custom_entrypoint.sh"]
           ports:
             - containerPort: 8000
           resources:

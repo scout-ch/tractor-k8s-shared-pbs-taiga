@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: taiga-migrate
+  namespace: pbs-taiga
+  labels:
+    app: taiga-migrate
+spec:
+  ttlSecondsAfterFinished: 0
+  template:
+    metadata:
+      labels:
+        app: taiga-migrate
+    spec:
+      nodeSelector:
+        kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pdp
+      restartPolicy: OnFailure
+      affinity:
+        podAffinity: # We need to schedule this on the same node as taiga-back because of shared volumes
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - taiga-back
+              topologyKey: "kubernetes.io/hostname"
+      volumes:
+        - name: taiga-static
+          persistentVolumeClaim:
+            claimName: taiga-static
+        - name: taiga-media
+          persistentVolumeClaim:
+            claimName: taiga-media
+      containers:
+        - name: taiga-back
+          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:dfa4a0b68cc0647915f456ca0d94532efbb825742a77966ab32c9b4f23cff772
+          command: ["/taiga-back/docker/migration.sh"]
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          envFrom:
+            - configMapRef:
+                name: taiga-config
+            - secretRef:
+                name: taiga-secrets
+          volumeMounts:
+            - name: taiga-static
+              mountPath: /taiga-back/static
+            - name: taiga-media
+              mountPath: /taiga-back/media

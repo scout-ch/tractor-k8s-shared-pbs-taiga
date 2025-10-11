@@ -8,6 +8,10 @@
 
 set -euo pipefail
 
+# Give permission to taiga:taiga after mounting volumes
+echo Give permission to taiga:taiga
+chown -R taiga:taiga /taiga-back
+
 # Execute pending migrations
 echo Executing pending migrations
 python manage.py migrate
@@ -15,3 +19,7 @@ python manage.py migrate
 # Load default templates
 echo Load default templates
 python manage.py loaddata initial_project_templates
+
+# Collect static files
+echo Collect static files
+python manage.py collectstatic --noinput --clear

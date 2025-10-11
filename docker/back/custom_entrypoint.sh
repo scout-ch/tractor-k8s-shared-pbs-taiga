@@ -8,17 +8,6 @@
 
 set -euo pipefail
 
-# Give permission to taiga:taiga after mounting volumes
-echo Give permission to taiga:taiga
-chown -R taiga:taiga /taiga-back
-
 # Start Taiga processes
 echo Starting Taiga API...
-exec gosu taiga gunicorn taiga.wsgi:application \
-    --name taiga_api \
-    --bind 0.0.0.0:8000 \
-    --workers 3 \
-    --worker-tmp-dir /dev/shm \
-    --log-level=info \
-    --access-logfile - \
-    "$@"
+exec gosu taiga "$@"

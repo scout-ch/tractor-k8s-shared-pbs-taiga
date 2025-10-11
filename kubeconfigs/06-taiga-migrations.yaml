@@ -35,8 +35,7 @@ spec:
       containers:
         - name: taiga-back
           image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:52464d7fa04305bada5dea8dc55b9e78f86e48a4581d8eb95eea2d49be75d499
-          command: []
-          args: ["/taiga-back/docker/migration.sh"]
+          command: ["/taiga-back/docker/migration.sh"]
           resources:
             requests:
               memory: "256Mi"

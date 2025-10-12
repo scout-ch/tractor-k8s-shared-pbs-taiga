@@ -1,6 +1,6 @@
 FROM taigaio/taiga-back:6.8.3@sha256:92d0cdd62b4fc20eab206347ba9bdd20f4a39b42227bd96bb9323a5f3f58a916 AS base
 
-FROM alpine/git@sha256:e67f8df098804a09c8cd54510b076a44a475a0ef9e25371fc8601f9cd81ae092 AS cloner
+FROM alpine/git@sha256:32a9e8e75ce2f244085b808c932d8287bd1300e4bfecae41a40847f7b64a1a45 AS cloner
 
 RUN git clone https://github.com/taigaio/taiga-contrib-oidc-auth.git && cd taiga-contrib-oidc-auth && git checkout c623b753047ce9923f3e38614d86e81fc5eb2bb1
 

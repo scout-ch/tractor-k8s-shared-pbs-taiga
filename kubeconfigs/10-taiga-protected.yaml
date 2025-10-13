@@ -21,7 +21,7 @@ spec:
         kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pdp
       containers:
         - name: taiga-protected
-          image: taigaio/taiga-protected:6.8.1@sha256:8a56c68b3bf8cbba73d8d4751451545410b490f424eec3a0cb0446a3a8123b4d
+          image: taigaio/taiga-protected:6.9.0@sha256:5f31fdb311431df45ceca4497abae05a312be9ca657564f20e164f825e9f1d5e
           ports:
             - containerPort: 8003
           env:

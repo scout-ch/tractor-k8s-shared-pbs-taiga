@@ -21,7 +21,7 @@ spec:
         kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pdp
       containers:
         - name: taiga-front
-          image: ghcr.io/scout-ch/pbs-taiga-front:latest@sha256:664593b18100b26a04702f540b21e02e3c046681c1b028dc856e03de4bc2fdc6
+          image: ghcr.io/scout-ch/pbs-taiga-front:latest@sha256:a2c68aaacd55f6c90d5ad3318ffc0dc4ec18e4ab6e08a9c1d19e23f2154de221
           ports:
             - containerPort: 80
           env:

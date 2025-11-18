@@ -31,7 +31,7 @@ spec:
         kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pdp
       containers:
         - name: taiga-async-rabbitmq
-          image: rabbitmq:4.2-management-alpine@sha256:304c771246b261babf09677f27b82c99b5c05330b0e8c73fcc133498cb021aec
+          image: rabbitmq:4.2-management-alpine@sha256:823b455d50e6a1a106243223a302c3eff5f14cf5d6a8827782071403ee255352
           ports:
             - containerPort: 5672
           resources:

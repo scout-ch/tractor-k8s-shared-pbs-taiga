@@ -1,7 +1,3 @@
-# PBS-Taiga
+# tractor-k8s-shared-pbs-taiga
 
-An agile, Free and Open Source Project Management Tool.
-
-Based off of https://github.com/taigaio/taiga-docker/tree/main
-
-Documentation can be found here: https://docs.taiga.io
+FluxCD config repository for tenant pbs-taiga on shared K8s cluster of Tractor

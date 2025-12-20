@@ -129,6 +129,9 @@ kind: Ingress
 metadata:
   name: taiga-gateway
   namespace: pbs-taiga
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
     - host: taiga.scout.ch
@@ -148,3 +151,7 @@ spec:
                 name: taiga-gateway
                 port:
                   number: 80
+  tls:
+    - hosts:
+        - taiga.scout.ch
+      secretName: tls-cert

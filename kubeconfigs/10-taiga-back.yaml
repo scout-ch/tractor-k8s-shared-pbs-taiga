@@ -101,7 +101,7 @@ metadata:
     app: taiga-back
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
     - host: taiga.scout.ch
@@ -121,3 +121,7 @@ spec:
                 name: taiga-back
                 port:
                   number: 8000
+  tls:
+    - hosts:
+        - taiga.scout.ch
+      secretName: tls-cert

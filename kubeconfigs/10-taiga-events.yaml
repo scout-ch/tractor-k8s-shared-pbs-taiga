@@ -201,3 +201,7 @@ spec:
                 name: taiga-events
                 port:
                   number: 8888
+  tls:
+    - hosts:
+        - taiga.scout.ch
+      secretName: tls-cert

@@ -87,3 +87,7 @@ spec:
                 name: taiga-front
                 port:
                   number: 80
+  tls:
+    - hosts:
+        - taiga.scout.ch
+      secretName: tls-cert

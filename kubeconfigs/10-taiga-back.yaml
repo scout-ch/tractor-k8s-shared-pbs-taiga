@@ -28,7 +28,7 @@ spec:
             claimName: taiga-media
       containers:
         - name: taiga-back
-          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:b0333a992a97fafd944960ba107724b817f6ecce6d90f1d9e2049155ded65e9f
+          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:db67ec4a40dd798d38fffe567198f977907eb02d3a583affe5aff297d0e26ab7
           command: ["/taiga-back/docker/custom_entrypoint.sh"]
           args:
             [

@@ -33,7 +33,7 @@ spec:
         - name: taiga-events-rabbitmq
           # Can't update post 4.1.0 because of breaking changes:
           # https://github.com/rabbitmq/rabbitmq-server/blob/main/release-notes/4.1.0.md#initial-amqp-0-9-1-maximum-frame-size
-          image: rabbitmq:4.0.9-management-alpine@sha256:13796ec670fc98b48a877923f7b350425a9f58b7a0c517e58ac1196faf017d3f
+          image: rabbitmq:4.0.9-management-alpine@sha256:4457c090bf03f2d58a91bbbe64d6a93fd49544bf873d03fab6d719a421bd56ff
           ports:
             - containerPort: 5672
           resources:

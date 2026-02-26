@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taiga-back
+  namespace: pbs-taiga
+  labels:
+    app: taiga-back
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: taiga-back
+  template:
+    metadata:
+      labels:
+        app: taiga-back
+    spec:
+      nodeSelector:
+        kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pdp
+      volumes:
+        - name: taiga-static
+          persistentVolumeClaim:
+            claimName: taiga-static
+        - name: taiga-media
+          persistentVolumeClaim:
+            claimName: taiga-media
+      containers:
+        - name: taiga-back
+          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:2429d72df30d0db6a2d92552dd82f966294cda364d13cd80c5a2cee9d9969138
+          command: ["/taiga-back/docker/custom_entrypoint.sh"]
+          args:
+            [
+              "gunicorn",
+              "taiga.wsgi:application",
+              "--name",
+              "taiga_api",
+              "--bind",
+              "0.0.0.0:8000",
+              "--workers",
+              "3",
+              "--worker-tmp-dir",
+              "/dev/shm",
+              "--log-level=info",
+              "--access-logfile",
+              "-",
+            ]
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          envFrom:
+            - configMapRef:
+                name: taiga-config
+            - secretRef:
+                name: taiga-secrets
+          volumeMounts:
+            - name: taiga-static
+              mountPath: /taiga-back/static
+            - name: taiga-media
+              mountPath: /taiga-back/media
+          readinessProbe:
+            httpGet:
+              path: /api/v1/
+              port: 8000
+          startupProbe:
+            httpGet:
+              path: /api/v1/
+              port: 8000
+            periodSeconds: 1
+            failureThreshold: 60
+          livenessProbe:
+            httpGet:
+              path: /api/v1/
+              port: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taiga-back
+  namespace: pbs-taiga
+spec:
+  selector:
+    app: taiga-back
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: taiga-back
+  namespace: pbs-taiga
+  labels:
+    app: taiga-back
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  rules:
+    - host: taiga.scout.ch
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/admin"
+            backend:
+              service:
+                name: taiga-back
+                port:
+                  number: 8000
+          - pathType: Prefix
+            path: "/api"
+            backend:
+              service:
+                name: taiga-back
+                port:
+                  number: 8000
+  tls:
+    - hosts:
+        - taiga.scout.ch
+      secretName: tls-cert

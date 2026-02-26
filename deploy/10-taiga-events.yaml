@@ -1,0 +1,207 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: taiga-events-rabbitmq
+  namespace: pbs-taiga
+spec:
+  resources:
+    requests:
+      storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: taiga-events-rabbitmq
+  namespace: pbs-taiga
+spec:
+  selector:
+    matchLabels:
+      app: taiga-events-rabbitmq
+  serviceName: taiga-events-rabbitmq
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: taiga-events-rabbitmq
+    spec:
+      nodeSelector:
+        kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pdp
+      containers:
+        - name: taiga-events-rabbitmq
+          # Can't update post 4.1.0 because of breaking changes:
+          # https://github.com/rabbitmq/rabbitmq-server/blob/main/release-notes/4.1.0.md#initial-amqp-0-9-1-maximum-frame-size
+          image: rabbitmq:4.0.9-management-alpine@sha256:f12ef310ed3dfd0497f950f175c0239094f22634f9c3532390a930ebacfd859d
+          ports:
+            - containerPort: 5672
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            exec:
+              command: ["rabbitmq-diagnostics", "status"]
+            initialDelaySeconds: 60
+            # See https://www.rabbitmq.com/monitoring.html for monitoring frequency recommendations.
+            periodSeconds: 60
+            timeoutSeconds: 15
+          readinessProbe:
+            exec:
+              command: ["rabbitmq-diagnostics", "ping"]
+            initialDelaySeconds: 20
+            periodSeconds: 60
+            timeoutSeconds: 10
+          env:
+            - name: RABBITMQ_ERLANG_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: taiga-mappable-secrets
+                  key: EVENTS_RABBITMQ_ERLANG_COOKIE
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: taiga-mappable-config
+                  key: EVENTS_RABBITMQ_USER
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: taiga-mappable-secrets
+                  key: EVENTS_RABBITMQ_PASS
+            - name: RABBITMQ_DEFAULT_VHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: taiga-mappable-config
+                  key: EVENTS_RABBITMQ_VHOST
+            - name: X_RABBITMQ_VM_MEMORY_HIGH_WATERMARK
+              value: "256Mi"
+          volumeMounts:
+            - name: taiga-events-rabbitmq
+              mountPath: /var/lib/rabbitmq/mnesia
+            - name: memory-limit-config
+              mountPath: /etc/rabbitmq/conf.d/20-memory-limit.conf
+              subPath: 20-memory-limit.conf
+      volumes:
+        - name: taiga-events-rabbitmq
+          persistentVolumeClaim:
+            claimName: taiga-events-rabbitmq
+        - name: memory-limit-config
+          configMap:
+            name: rabbitmq-memory-limit-config
+            items:
+              - key: 20-memory-limit.conf
+                path: 20-memory-limit.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taiga-events-rabbitmq
+  namespace: pbs-taiga
+spec:
+  selector:
+    app: taiga-events-rabbitmq
+  ports:
+    - port: 5672
+      targetPort: 5672
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taiga-events
+  namespace: pbs-taiga
+  labels:
+    app: taiga-events
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: taiga-events
+  template:
+    metadata:
+      labels:
+        app: taiga-events
+    spec:
+      nodeSelector:
+        kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pdp
+      containers:
+        - name: taiga-events
+          image: taigaio/taiga-events:6.9.0@sha256:ebb0d8778707b5066d50f1e96be98ed0435e8cc89dfdc48b78ac2c1fdda914fe
+          ports:
+            - containerPort: 8888
+          env:
+            - name: RABBITMQ_URL
+              valueFrom:
+                secretKeyRef:
+                  name: taiga-secrets
+                  key: EVENTS_PUSH_BACKEND_URL
+            - name: TAIGA_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: taiga-secrets
+                  key: TAIGA_SECRET_KEY
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3023
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3023
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 3023
+            periodSeconds: 1
+            failureThreshold: 60
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taiga-events
+  namespace: pbs-taiga
+spec:
+  selector:
+    app: taiga-events
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: taiga-events
+  namespace: pbs-taiga
+  labels:
+    app: taiga-events
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  rules:
+    - host: taiga.scout.ch
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/events"
+            backend:
+              service:
+                name: taiga-events
+                port:
+                  number: 8888
+  tls:
+    - hosts:
+        - taiga.scout.ch
+      secretName: tls-cert

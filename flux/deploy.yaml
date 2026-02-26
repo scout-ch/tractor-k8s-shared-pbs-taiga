@@ -11,5 +11,3 @@ spec:
   interval: 10m0s
   path: "./deploy/"
   prune: true
-  dependsOn:
-    - name: app-pre-deploy

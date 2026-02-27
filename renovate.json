@@ -48,7 +48,14 @@
   ],
   "kubernetes": {
     "managerFilePatterns": [
-      "/kubeconfigs/.+\\.yaml$/"
+      "/deploy/.+\\.yaml$/",
+      "/post-deploy/.+\\.yaml$/",
+      "/flux/.+\\.yaml$/"
+    ]
+  },
+  "flux": {
+    "managerFilePatterns": [
+      "/flux/.+\\.yaml$/"
     ]
   }
 }

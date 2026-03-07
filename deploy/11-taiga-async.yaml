@@ -155,7 +155,7 @@ spec:
               memory: "350Mi"
               cpu: "10m"
             limits:
-              memory: "500fMi"
+              memory: "500Mi"
               cpu: "50m"
           envFrom:
             - configMapRef:

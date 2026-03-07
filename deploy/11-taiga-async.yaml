@@ -36,11 +36,11 @@ spec:
             - containerPort: 5672
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "250m"
+              memory: "100Mi"
+              cpu: "80m"
             limits:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: "250Mi"
+              cpu: "200m"
           livenessProbe:
             exec:
               command: ["rabbitmq-diagnostics", "status"]
@@ -152,11 +152,11 @@ spec:
             ]
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "250m"
+              memory: "350Mi"
+              cpu: "10m"
             limits:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: "500Mi"
+              cpu: "50m"
           envFrom:
             - configMapRef:
                 name: taiga-config

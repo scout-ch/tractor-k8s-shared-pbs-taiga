@@ -78,6 +78,13 @@ spec:
           image: nginx:1.29-alpine@sha256:1d13701a5f9f3fb01aaa88cef2344d65b6b5bf6b7d9fa4cf0dca557a8d7702ba
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              memory: "5Mi"
+              cpu: "10m"
+            limits:
+              memory: "50Mi"
+              cpu: "50m"
           volumeMounts:
             - name: taiga-gateway-config
               mountPath: /etc/nginx/conf.d/

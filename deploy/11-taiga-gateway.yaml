@@ -75,7 +75,7 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
         - name: taiga-gateway
-          image: nginx:1.30-alpine@sha256:94da95f06ada2ac33a9016770c45ad4c3037805ed54ec8dbf2d9d2f83f3f462f
+          image: nginx:1.30-alpine@sha256:6525b050aa05151ca19ec7090851bc8c12006cffdae5187f3d28023402f44cfa
           ports:
             - containerPort: 80
           resources:

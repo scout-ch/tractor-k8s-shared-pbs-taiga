@@ -131,7 +131,7 @@ spec:
         kaas.infomaniak.cloud/instance-pool: pck-8kxhclv-pdp
       containers:
         - name: taiga-events
-          image: taigaio/taiga-events:6.9.0@sha256:ebb0d8778707b5066d50f1e96be98ed0435e8cc89dfdc48b78ac2c1fdda914fe
+          image: taigaio/taiga-events:6.10.0@sha256:92fc0822564f891700d74d23fa44951adf2845cf50c9e56bfd0ef29abdc1ab40
           ports:
             - containerPort: 8888
           env:

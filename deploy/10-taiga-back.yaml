@@ -18,7 +18,7 @@ spec:
         app: taiga-back
     spec:
       nodeSelector:
-        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-ppy
+        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne3
       volumes:
         - name: taiga-static
           persistentVolumeClaim:

@@ -62,7 +62,7 @@ spec:
         app: taiga-gateway
     spec:
       nodeSelector:
-        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-ppy
+        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne3
       affinity:
         podAffinity: # We need to schedule this on the same node as taiga-back because of shared volumes
           requiredDuringSchedulingIgnoredDuringExecution:

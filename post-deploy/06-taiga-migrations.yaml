@@ -12,7 +12,7 @@ spec:
         app: taiga-migrate
     spec:
       nodeSelector:
-        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne3
+        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne
       restartPolicy: OnFailure
       affinity:
         podAffinity: # We need to schedule this on the same node as taiga-back because of shared volumes

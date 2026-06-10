@@ -28,7 +28,7 @@ spec:
         app: taiga-async-rabbitmq
     spec:
       nodeSelector:
-        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne3
+        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne
       containers:
         - name: taiga-async-rabbitmq
           image: rabbitmq:4.3-management-alpine@sha256:2f8a91462dc3c9eb11d2ddf075d3eba2201ccb75beceb3b6166dec450f412d01
@@ -114,7 +114,7 @@ spec:
         app: taiga-async
     spec:
       nodeSelector:
-        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne3
+        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne
       affinity:
         podAffinity: # We need to schedule this on the same node as taiga-back because of shared volumes
           requiredDuringSchedulingIgnoredDuringExecution:

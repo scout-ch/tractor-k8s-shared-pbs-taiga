@@ -18,7 +18,7 @@ spec:
         app: taiga-protected
     spec:
       nodeSelector:
-        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne3
+        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne
       containers:
         - name: taiga-protected
           image: taigaio/taiga-protected:6.10.1@sha256:fd4568a97a59225db90f422594cf0e05010be50c9a2a383c01477c5ee521d393

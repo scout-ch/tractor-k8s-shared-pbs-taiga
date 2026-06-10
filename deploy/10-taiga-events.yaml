@@ -28,7 +28,7 @@ spec:
         app: taiga-events-rabbitmq
     spec:
       nodeSelector:
-        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne3
+        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne
       containers:
         - name: taiga-events-rabbitmq
           # Can't update post 4.1.0 because of breaking changes:
@@ -128,7 +128,7 @@ spec:
         app: taiga-events
     spec:
       nodeSelector:
-        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne3
+        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne
       containers:
         - name: taiga-events
           image: taigaio/taiga-events:6.10.0@sha256:92fc0822564f891700d74d23fa44951adf2845cf50c9e56bfd0ef29abdc1ab40

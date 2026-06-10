@@ -18,7 +18,7 @@ spec:
         app: taiga-front
     spec:
       nodeSelector:
-        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne3
+        kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne
       containers:
         - name: taiga-front
           image: ghcr.io/scout-ch/pbs-taiga-front:latest@sha256:95fc69edc40bddc6bc8f8bc05ce6eeb86fe880b4fd8a5ae817f17ebd53c72ea9

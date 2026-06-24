@@ -134,7 +134,7 @@ spec:
             claimName: taiga-media
       containers:
         - name: taiga-async
-          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:39448032acdf3689ba8558c08939525e1342a2b344cbac8ef26f48a27c03d8e7
+          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:b6b10a17a97953543cf6eeeba79cc7faf4245ed4507fc26d2e7f06aea8fdaf67
           ports:
             - containerPort: 8000
           command: ["/taiga-back/docker/custom_entrypoint.sh"]

@@ -44,6 +44,15 @@
         "rabbitmq"
       ],
       "allowedVersions": "<4.1.0"
+    },
+    {
+      "matchFileNames": [
+        "**/11-taiga-async.yaml"
+      ],
+      "matchDepNames": [
+        "rabbitmq"
+      ],
+      "allowedVersions": "<4.4.0"
     }
   ],
   "kubernetes": {

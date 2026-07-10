@@ -31,6 +31,7 @@ spec:
         kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne
       containers:
         - name: taiga-async-rabbitmq
+          # do not use version > 4.3, as we rely on deprecated features
           image: rabbitmq:4.3-management-alpine@sha256:0753b75ce99094c385483d89449d532a0544fb85e4942a478b21cc497ab66d33
           ports:
             - containerPort: 5672

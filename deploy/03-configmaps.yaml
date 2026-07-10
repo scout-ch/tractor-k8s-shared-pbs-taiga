@@ -49,3 +49,12 @@ metadata:
 data:
   20-memory-limit.conf: |
     vm_memory_high_watermark.absolute = $(X_RABBITMQ_VM_MEMORY_HIGH_WATERMARK)
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-deprecated-features-config
+  namespace: pbs-taiga
+data:
+  10-deprecated-features.conf: |
+    deprecated_features.permit.transient_nonexcl_queues = true

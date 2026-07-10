@@ -83,6 +83,9 @@ spec:
             - name: memory-limit-config
               mountPath: /etc/rabbitmq/conf.d/20-memory-limit.conf
               subPath: 20-memory-limit.conf
+            - name: deprecated-features-config
+              mountPath: /etc/rabbitmq/conf.d/10-deprecated-features.conf
+              subPath: 10-deprecated-features.conf
       volumes:
         - name: taiga-async-rabbitmq
           persistentVolumeClaim:
@@ -93,6 +96,12 @@ spec:
             items:
               - key: 20-memory-limit.conf
                 path: 20-memory-limit.conf
+        - name: deprecated-features-config
+          configMap:
+            name: rabbitmq-deprecated-features-config
+            items:
+              - key: 10-deprecated-features.conf
+                path: 10-deprecated-features.conf
 ---
 apiVersion: apps/v1
 kind: Deployment

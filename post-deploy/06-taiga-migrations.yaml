@@ -33,7 +33,7 @@ spec:
             claimName: taiga-media
       containers:
         - name: taiga-back
-          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:f4f9f9ce201f9586ef837bc377e65f0a3852b94e27051f5a92b3739b4f2dc5d0
+          image: ghcr.io/scout-ch/pbs-taiga-back:latest@sha256:f4dd80daba94bb720c59177aadad05a42ee5f96705f0e523cc7e019bc0bccb8b
           command: ["/taiga-back/docker/migration.sh"]
           resources:
             requests:

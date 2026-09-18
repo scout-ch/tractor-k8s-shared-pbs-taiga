@@ -32,7 +32,7 @@ spec:
       containers:
         - name: taiga-async-rabbitmq
           # do not use version > 4.3, as we rely on deprecated features
-          image: rabbitmq:4.3-management-alpine@sha256:ccbb15cec23461ff55a691d6727fed513cabd8517975e5ad207d784dea45406e
+          image: rabbitmq:4.3-management-alpine@sha256:b839b492a91788a1d9406ef3ec0e1d8a8448032c48148a54a9e0c68ed66cde9b
           ports:
             - containerPort: 5672
           resources:

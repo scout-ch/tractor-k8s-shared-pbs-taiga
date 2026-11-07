@@ -21,7 +21,7 @@ spec:
         kaas.infomaniak.cloud/instance-pool: pck-2tvwejg-pne
       containers:
         - name: taiga-front
-          image: ghcr.io/scout-ch/pbs-taiga-front:latest@sha256:f69e6949e8b1205c450d79a05c7bf63b6c35835884dd7dd3fd117c0c0e676f9a
+          image: ghcr.io/scout-ch/pbs-taiga-front:latest@sha256:050c1dfa0d1f5d6dec58914115d3e001212c9cb0b05c9f39b96cb64dd6571cc0
           ports:
             - containerPort: 80
           env:
